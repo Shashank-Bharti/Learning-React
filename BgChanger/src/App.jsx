@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [color,setColor] = useState(color)
+  const [color,setColor] = useState("red")
   return (
 
     <div className='flex  w-full h-screen justify-center duration-200' style={{backgroundColor:color}}>
