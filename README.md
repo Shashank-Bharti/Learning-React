@@ -35,7 +35,7 @@ This repository is dedicated to documenting my journey and progress as I learn R
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Shashank-Bharti/React.git
+   git clone https://github.com/Shashank-Bharti/Learning-React.git
    ```
 2. **Navigate to the project directory:**
    ```bash
