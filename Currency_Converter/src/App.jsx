@@ -3,7 +3,7 @@ import { InputBox } from './components'
 import useCurrencyInfo from './hooks/useCurrencyInfo'
 
 function App() {
-  const [amount,setAmount] = useState()
+  const [amount,setAmount] = useState(0)
   const [from,setFrom] = useState("usd")
   const [to,setTo] = useState("inr")
   const [convertedAmount,setConvertedAmount] = useState(0)
@@ -14,7 +14,7 @@ function App() {
     setFrom(to)
     setTo(from)
     setConvertedAmount(amount)
-    setAmount(convertedAmount)
+    setAmount(Math.round(convertedAmount))
     
   }
   const convert = () => {
@@ -24,13 +24,14 @@ function App() {
   
   return (
         <div
-            className="w-full h-screen flex flex-wrap justify-center items-center bg-cover bg-no-repeat"
+            className="w-full h-screen  flex flex-wrap justify-center items-center bg-center md:bg-cover bg-no-repeat"
             style={{
                 backgroundImage: `url('${BackgroundImage}')`,
+
             }}
         >
-            <div className="w-full">
-                <div className="w-full max-w-md mx-auto border border-gray-60 rounded-lg p-5 backdrop-blur-sm bg-white/30">
+            <div className=" md:absolute md:h-screen left-0 place-items-center md:w-1/2 md:backdrop-blur-sm md:bg-white/30">
+                <div className="w-full md:absolute md:top-1/3 border md:border-none items-center border-gray-60  backdrop-blur-sm bg-white/30 md:bg-transparent md:backdrop-blur-none rounded-lg p-5 ">
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -43,7 +44,7 @@ function App() {
                                 label="From"
                                 amount={amount}
                                 currencyOptions={options}
-                                onCurrencyChange={(currency)=>setAmount(amount)}
+                                onCurrencyChange={(currency)=>setFrom(currency)}
                                 selectCurrency={from}
                                 onAmountChange={(amount) => setAmount(amount)}
                                 
@@ -52,7 +53,7 @@ function App() {
                         <div className="relative w-full h-0.5">
                             <button
                                 type="button"
-                                className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 border-2  border-white rounded-full bg-blue-600 text-white p-2"
+                                className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 hover:bg-blue-500 border-white rounded-full transitio bg-blue-600 text-white p-2"
                                 onClick={swap}
                             >
                                 swap
@@ -70,7 +71,7 @@ function App() {
                                 
                             />
                         </div>
-                        <button type="submit" className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg">
+                        <button type="submit" className="w-full bg-blue-600 transition-colors  text-white px-4 py-3 hover:bg-blue-400 rounded-lg">
                             Convert {`${from.toUpperCase()} to ${to.toUpperCase()}`}
                         </button>
                     </form>
