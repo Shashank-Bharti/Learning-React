@@ -10,8 +10,12 @@ function AddTodo() {
     const disptch = useDispatch()
     const addTodoHandler = (e)=>{
         e.preventDefault()
+        if (input.trim().length !== 0){
         disptch(addTodo(input))
         setInput('')
+        }else{
+            window.alert("Task Cannot Be Empty!")
+        }
     }
   return (
     <form onSubmit={addTodoHandler} className="space-x-3 mt-12">
@@ -25,6 +29,7 @@ function AddTodo() {
       <button
         type="submit"
         className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+
       >
         Add Todo
       </button>
