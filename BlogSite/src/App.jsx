@@ -2,8 +2,8 @@ import React from 'react'
 
 function App() {
   return (
-    <div>
-      
+    <div className='bg-gray-400 h-screen text-white  w-full '>
+      Blog App with AppWrite
     </div>
   )
 }
