@@ -1,12 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { markComplete, removeTodo } from '../features/todo/todoSlice'
+import { editTodo, markComplete, removeTodo, updateTodo } from '../features/todo/todoSlice'
 
 
 function Todos() {
     const todos = useSelector( state => state.todos)
     
     const dispatch = useDispatch()
+    const [editValues, setEditValues] = useState({})
+
+    const handleEditClick = (todo) => {
+      // toggle edit mode in store and initialize local edit value
+      dispatch(editTodo(todo.id))
+      setEditValues(prev => ({ ...prev, [todo.id]: todo.text }))
+    }
+
+    const handleChange = (id, value) => {
+      setEditValues(prev => ({ ...prev, [id]: value }))
+    }
+
+    const handleSave = (id) => {
+      const text = (editValues[id] ?? '').trim()
+      if (text.length === 0) {
+        // optional: ignore empty save or alert
+        return
+      }
+      dispatch(updateTodo({ id, text }))
+      // updateTodo reducer will turn off editTodo
+    }
+
+    const handleKeyDown = (e, id) => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        handleSave(id)
+      } else if (e.key === 'Escape') {
+        // cancel edit: toggle off
+        dispatch(editTodo(id))
+      }
+    }
 
   return (
     <>
@@ -21,7 +52,26 @@ function Todos() {
              checked={todo.completed}
              onChange={()=> dispatch(markComplete(todo.id))}
               />
-            <div className={`  ${todo.completed === false?'text-gray-200':'line-through text-gray-800'} `}>{todo.text}</div>
+            <div className={`flex-1 mx-3 ${todo.completed === false?'text-gray-200':'line-through text-gray-800'} `}>
+              <input
+                type="text"
+                value={editValues[todo.id] ?? todo.text}
+                disabled={!todo.editTodo}
+                onChange={(e) => handleChange(todo.id, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, todo.id)}
+                onBlur={() => {
+                  if (todo.editTodo) handleSave(todo.id)
+                }}
+                className={`bg-transparent outline-none w-full ${todo.editTodo ? 'border-b border-gray-400' : 'pointer-events-none'}`}
+              />
+            </div>
+            <div
+              className="bg-white p-1 outline-none rounded-md hover:bg-slate-300 cursor-pointer select-none"
+              onClick={() => handleEditClick(todo)}
+              title={todo.editTodo ? 'Cancel' : 'Edit'}
+            >
+              {'✏️'}
+            </div>
             <button
              onClick={() => dispatch(removeTodo(todo.id))}
               className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md"
